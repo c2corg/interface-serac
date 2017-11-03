@@ -1,9 +1,9 @@
 <?php
 // class files
+error_reporting(0);
 require("../lib/libRequest.php");
 require("../class/interfaceAuth.class.php");
 require("../class/interfaceSerac.class.php");
-
 
 // prepare the database
 require("../partials/db.php");
@@ -15,8 +15,16 @@ $interfaceAuth = new interfaceAuth($db,$data['client_key'],$headers['Token']);
 
 if($interfaceAuth->isAuthorize())
 {
-    $interfaceSerac = new InterfaceSerac($db,$interfaceAuth->getIdProvider(),true);
+    $admin = false;
+    if(isset($_GET['fa'])) {
+      if($_GET['fa'] == "1")
+        $admin = true;
+    } else if(isset($data['fa'])) {
+      if($data['fa'] == "1")
+        $admin = true;
+    }
 
+    $interfaceSerac = new InterfaceSerac($db,$interfaceAuth->getIdProvider(),$admin);
     $interfaceSerac->request($method,$request,$data);
 }
 else

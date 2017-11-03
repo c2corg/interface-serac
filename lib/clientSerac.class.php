@@ -33,7 +33,7 @@ class clientSerac {
 
     public function changeReports($data)
     {
-        $result = $this->doRequest($data,"reports","PUT");
+        $result = $this->doRequest($data,"reports","POST");
         $data = json_decode($result);
         return $data;
     }
