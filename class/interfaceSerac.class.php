@@ -320,7 +320,7 @@ class interfaceSerac {
           else
           $pushed = 0;
 
-          $query = $this->db->prepare('INSERT INTO `reports` (`id`, `id_provider`, `id_user`,`pushed`, `visibility`, `json_serac`, `json_custom`, `title`, `activities`,`event_type`, `date_start`, `date_end`, `elevation`, `severity`, `nb_participants`, `nb_impacted`, `quality`, `language`, `created_at`, `updated_at`) VALUES (NULL, :id_provider, :id_user, FALSE, :visibility, :json_serac, :json_custom, :title, :activities, :event_type, :date_start, :date_end, :elevation, :severity, :nb_participants, :nb_impacted, :quality, :language, now(), now());');
+          $query = $this->db->prepare('INSERT INTO `reports` (`id`, `id_provider`, `id_user`,`pushed`, `visibility`, `json_serac`, `json_custom`, `title`, `activities`,`event_type`, `date_start`, `date_end`, `elevation`, `severity`, `nb_participants`, `nb_impacted`, `quality`, `language`, `created_at`, `updated_at`) VALUES (NULL, :id_provider, :id_user, :pushed, :visibility, :json_serac, :json_custom, :title, :activities, :event_type, :date_start, :date_end, :elevation, :severity, :nb_participants, :nb_impacted, :quality, :language, now(), now());');
           $query->execute(Array('id_provider' => $this->id_provider,
           'id_user' => $data['id_user'],
           'pushed' => $pushed,
@@ -455,7 +455,7 @@ private function getRequest($method,$request,$data) {
         $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id" => intval($request[1])));
       } else {
-        $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1)) AND id = :id');
+        $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1 OR visibility = 2)) AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "id" => intval($request[1])));
       }
 
