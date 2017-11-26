@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  postgresql:
+     build: ./install/
+
+  serac:
+    image: c2corg/interface-serac:latest
+    ports:
+    - 8080:80
+    links:
+    - postgresql
+    environment:
+      DB_HOST: postgresql
+      DB_USER: www-data
+      DB_PASS: www-data
+
