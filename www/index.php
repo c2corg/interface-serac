@@ -1,6 +1,8 @@
 <?php
 // class files
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set("log_errors", true);
+ini_set("display_errors", false);
 require("../lib/libRequest.php");
 require("../class/interfaceAuth.class.php");
 require("../class/interfaceSerac.class.php");
