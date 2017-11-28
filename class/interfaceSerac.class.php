@@ -38,7 +38,7 @@ class interfaceSerac {
   }
 
   private function makePutQuery($data) {
-    $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND id = :id AND id_user = :id_user');
+    $query = $this->db->prepare('SELECT * FROM reports WHERE id_provider = :id_provider AND id = :id AND id_user = :id_user');
     $query->execute(Array('id_provider' => $this->id_provider,"id" => $data['id'], 'id_user' => $data['id_user']));
     $result = $query->fetch();
   }
@@ -55,41 +55,41 @@ class interfaceSerac {
         $this->makePutQuery($data);
 
         if($this->is_admin) {
-          $query = $this->db->prepare('UPDATE `reports` SET
-            `visibility` = :visibility,
-            `json_serac` = :json_serac,
-            `json_custom` = :json_custom,
-            `title` = :title,
-            `activities` = :activities,
-            `event_type` = :event_type,
-            `date_start` = :date_start,
-            `elevation` = :elevation,
-            `nb_participants` = :nb_participants,
-            `nb_impacted` = :nb_impacted,
-            `quality` = :quality,
-            `updated_at` =  now()
+          $query = $this->db->prepare('UPDATE reports SET
+            visibility = :visibility,
+            json_serac = :json_serac,
+            json_custom = :json_custom,
+            title = :title,
+            activities` = :activities,
+            event_type = :event_type,
+            date_start = :date_start,
+            elevation = :elevation,
+            nb_participants = :nb_participants,
+            nb_impacted = :nb_impacted,
+            quality = :quality,
+            updated_at =  now()
             WHERE id_provider= :id_provider AND id = :id
             ');
 
             $query->execute(Array('id' => $request[1],
-            'id_provider' => $this->id_provider,
-            'visibility' => $data['visibility'],
-            'json_serac' => $this->makeSeracJson($data),
-            'json_custom' => $data['json_custom'],
-            'title' => $data['title'],
-            'activities' => json_encode($data['activities']),
-            'event_type' => json_encode($data['event_type']),
-            'date_start' => $data['date_start'],
-            'elevation' => $data['elevation'],
-            'nb_participants' => $data['nb_participants'],
-            'nb_impacted' => $data['nb_impacted'],
-            'quality' => $data['quality'],
+            id_provider => $this->id_provider,
+            visibility => $data['visibility'],
+            json_serac => $this->makeSeracJson($data),
+            json_custom => $data['json_custom'],
+            title => $data['title'],
+            activities => json_encode($data['activities']),
+            event_type => json_encode($data['event_type']),
+            date_start => $data['date_start'],
+            elevation => $data['elevation'],
+            nb_participants => $data['nb_participants'],
+            nb_impacted => $data['nb_impacted'],
+            quality => $data['quality'],
           ));
 
           if($data['visibility'] == '2') // 0 private, 1 private autorize user, 2 public , we push it on c2c
           {
 
-            $test = $this->db->prepare('SELECT pushed FROM `reports` WHERE id_provider = :id_provider AND id = :id');
+            $test = $this->db->prepare('SELECT pushed FROM reports WHERE id_provider = :id_provider AND id = :id');
             $test->execute(Array(id_provider => $this->id_provider, "id" => intval($request[1])));
             $res = $test->fetch();
             if($res['pushed'] === 0) {
@@ -99,19 +99,19 @@ class interfaceSerac {
 
 
         } else {
-          $query = $this->db->prepare('UPDATE `reports` SET
-            `visibility` = :visibility,
-            `json_serac` = :json_serac,
-            `json_custom` = :json_custom,
-            `title` = :title,
-            `activities` = :activities,
-            `event_type` = :event_type,
-            `date_start` = :date_start,
-            `elevation` = :elevation,
-            `nb_participants` = :nb_participants,
-            `nb_impacted` = :nb_impacted,
-            `quality` = :quality,
-            `updated_at` =  now()
+          $query = $this->db->prepare('UPDATE reports SET
+            visibility = :visibility,
+            json_serac = :json_serac,
+            json_custom = :json_custom,
+            title = :title,
+            activities = :activities,
+            event_type = :event_type,
+            date_start = :date_start,
+            elevation = :elevation,
+            nb_participants = :nb_participants,
+            nb_impacted = :nb_impacted,
+            quality = :quality,
+            updated_at =  now()
             WHERE id_provider= :id_provider AND id = :id AND id_user: id_user
             ');
 
@@ -134,12 +134,12 @@ class interfaceSerac {
             'language' => $data['language']
           ));
 
-          $test = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
+          $test = $this->db->prepare('SELECT * FROM reports WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
           $test->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "id" => intval($request[1])));
 
           if($data['visibility'] == 2) // 0 private, 1 private autorize user, 2 public , we push it on c2c
           {
-            $test = $this->db->prepare('SELECT pushed FROM `reports` WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
+            $test = $this->db->prepare('SELECT pushed FROM reports WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
             $test->execute(Array(id_provider => $this->id_provider, 'id_user' => $data['id_user'], "id" => intval($request[1])));
             $res = $test->fetch();
             if($res['pushed'] === 0) {
@@ -193,7 +193,7 @@ class interfaceSerac {
     curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
     if($id != NULL) {
-      $query = $this->db->prepare('UPDATE `reports` SET `pushed` = TRUE WHERE id = :id');
+      $query = $this->db->prepare('UPDATE reports SET pushed = TRUE WHERE id = :id');
       $query->execute(Array('id' => $id));
     }
 
@@ -216,19 +216,19 @@ class interfaceSerac {
 
           $this->makePutQuery($data);
           if($this->is_admin) {
-            $query = $this->db->prepare('UPDATE `reports` SET
-              `visibility` = :visibility,
-              `json_serac` = :json_serac,
-              `json_custom` = :json_custom,
-              `title` = :title,
-              `activities` = :activities,
-              `event_type` = :event_type,
-              `date_start` = :date_start,
-              `elevation` = :elevation,
-              `nb_participants` = :nb_participants,
-              `nb_impacted` = :nb_impacted,
-              `quality` = :quality,
-              `updated_at` =  now()
+            $query = $this->db->prepare('UPDATE reports SET
+              visibility = :visibility,
+              json_serac = :json_serac,
+              json_custom = :json_custom,
+              title = :title,
+              activities = :activities,
+              event_type = :event_type,
+              date_start = :date_start,
+              elevation = :elevation,
+              nb_participants = :nb_participants,
+              nb_impacted = :nb_impacted,
+              quality = :quality,
+              updated_at =  now()
               WHERE id_provider= :id_provider AND id = :id
               ');
 
@@ -248,7 +248,7 @@ class interfaceSerac {
             ));
             if($data['visibility'] == '2') // 0 private, 1 private autorize user, 2 public , we push it on c2c
             {
-              $test = $this->db->prepare('SELECT pushed FROM `reports` WHERE id_provider = :id_provider AND id = :id');
+              $test = $this->db->prepare('SELECT pushed FROM reports WHERE id_provider = :id_provider AND id = :id');
               $test->execute(Array("id_provider" => $this->id_provider, "id" => intval($request[1])));
               $res = $test->fetch();
 
@@ -257,19 +257,19 @@ class interfaceSerac {
               }
             }
           } else {
-            $query = $this->db->prepare('UPDATE `reports` SET
-              `visibility` = :visibility,
-              `json_serac` = :json_serac,
-              `json_custom` = :json_custom,
-              `title` = :title,
-              `activities` = :activities,
-              `event_type` = :event_type,
-              `date_start` = :date_start,
-              `elevation` = :elevation,
-              `nb_participants` = :nb_participants,
-              `nb_impacted` = :nb_impacted,
-              `quality` = :quality,
-              `updated_at` =  now()
+            $query = $this->db->prepare('UPDATE reports SET
+              visibility = :visibility,
+              json_serac = :json_serac,
+              json_custom = :json_custom,
+              title = :title,
+              activities = :activities,
+              event_type = :event_type,
+              date_start = :date_start,
+              elevation = :elevation,
+              nb_participants = :nb_participants,
+              nb_impacted = :nb_impacted,
+              quality = :quality,
+              updated_at =  now()
               WHERE id_provider= :id_provider AND id = :id AND id_user: id_user
               ');
 
@@ -292,12 +292,12 @@ class interfaceSerac {
               'language' => $data['language']
             ));
 
-            $test = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
+            $test = $this->db->prepare('SELECT * FROM reports WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
             $test->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "id" => intval($request[1])));
 
             if($data['visibility'] == 2) // 0 private, 1 private autorize user, 2 public , we push it on c2c
             {
-              $test = $this->db->prepare('SELECT pushed FROM `reports` WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
+              $test = $this->db->prepare('SELECT pushed FROM reports WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
               $test->execute(Array(id_provider => $this->id_provider, 'id_user' => $data['id_user'], "id" => intval($request[1])));
               $res = $test->fetch();
               if($res['pushed'] === 0) {
@@ -320,7 +320,7 @@ class interfaceSerac {
           else
           $pushed = 0;
 
-          $query = $this->db->prepare('INSERT INTO `reports` (`id`, `id_provider`, `id_user`,`pushed`, `visibility`, `json_serac`, `json_custom`, `title`, `activities`,`event_type`, `date_start`, `date_end`, `elevation`, `severity`, `nb_participants`, `nb_impacted`, `quality`, `language`, `created_at`, `updated_at`) VALUES (NULL, :id_provider, :id_user, :pushed, :visibility, :json_serac, :json_custom, :title, :activities, :event_type, :date_start, :date_end, :elevation, :severity, :nb_participants, :nb_impacted, :quality, :language, now(), now());');
+          $query = $this->db->prepare('INSERT INTO reports (id, id_provider, id_user,pushed, visibility, json_serac, json_custom, title, activities,event_type, date_start, date_end, elevation, severity, nb_participants, nb_impacted, quality, language, created_at, updated_at) VALUES (DEFAULT, :id_provider, :id_user, :pushed, :visibility, :json_serac, :json_custom, :title, :activities, :event_type, :date_start, :date_end, :elevation, :severity, :nb_participants, :nb_impacted, :quality, :language, now(), now());');
           $query->execute(Array('id_provider' => $this->id_provider,
           'id_user' => $data['id_user'],
           'pushed' => $pushed,
@@ -452,10 +452,10 @@ private function getRequest($method,$request,$data) {
     case 'reports':
     if(isset($request[1]) && is_numeric($request[1])) { // get a single report
       if($this->is_admin) {
-        $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND id = :id');
+        $query = $this->db->prepare('SELECT * FROM reports WHERE id_provider = :id_provider AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id" => intval($request[1])));
       } else {
-        $query = $this->db->prepare('SELECT * FROM `reports` WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1 OR visibility = 2)) AND id = :id');
+        $query = $this->db->prepare('SELECT * FROM reports WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1 OR visibility = 2)) AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "id" => intval($request[1])));
       }
 
@@ -470,10 +470,10 @@ private function getRequest($method,$request,$data) {
       }
 
       if($this->is_admin) {
-        $query = $this->db->prepare('SELECT id,id_user,title, activities, visibility,date_start, severity,event_type FROM `reports` WHERE id_provider = :id_provider ORDER BY created_at DESC LIMIT :page, 20');
+        $query = $this->db->prepare('SELECT id,id_user,title, activities, visibility,date_start, severity,event_type FROM reports WHERE id_provider = :id_provider ORDER BY created_at DESC LIMIT 20 OFFSET :page');
         $query->execute(Array("id_provider" => $this->id_provider, "page" => $page));
       } else {
-        $query = $this->db->prepare('SELECT id,id_user,title, activities, visibility,date_start, severity,event_type FROM `reports` WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1 OR visibility = 2)) ORDER BY created_at DESC LIMIT :page, 20');
+        $query = $this->db->prepare('SELECT id,id_user,title, activities, visibility,date_start, severity,event_type FROM reports WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1 OR visibility = 2)) ORDER BY created_at DESC LIMIT 20 OFFSET :page');
         $query->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "page" => $page));
       }
 
@@ -493,10 +493,10 @@ private function getRequest($method,$request,$data) {
       $search = implode('%',explode(" ",$data['s']));
 
       if($this->is_admin) {
-        $query = $this->db->prepare('SELECT id,id_user,title, activities, date_start, severity,event_type FROM `reports` WHERE id_provider = :id_provider AND title LIKE :search ORDER BY created_at DESC LIMIT :page, 20');
+        $query = $this->db->prepare('SELECT id,id_user,title, activities, date_start, severity,event_type FROM reports WHERE id_provider = :id_provider AND title LIKE :search ORDER BY created_at DESC LIMIT 20 OFFSET :page');
         $query->execute(Array("id_provider" => $this->id_provider, "search" => $search, "page" => $page));
       } else {
-        $query = $this->db->prepare('SELECT id,id_user,title, activities, date_start, severity,event_type FROM `reports` WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1)) ORDER BY created_at DESC LIMIT :page, 20');
+        $query = $this->db->prepare('SELECT id,id_user,title, activities, date_start, severity,event_type FROM reports WHERE id_provider = :id_provider AND ((visibility = 0 AND id_user = :id_user) OR (visibility = 1)) ORDER BY created_at DESC LIMIT 20 OFFSET :page');
         $query->execute(Array("id_provider" => $this->id_provider, "search" => $search, "page" => $page));
       }
 
@@ -586,10 +586,10 @@ private function deleteRequest($method,$request,$data)
     case 'reports':
     if(isset($request[1]) && is_numeric($request[1])) {
       if($this->is_admin) {
-        $query = $this->db->prepare('DELETE FROM `reports` WHERE id_provider = :id_provider AND id = :id');
+        $query = $this->db->prepare('DELETE FROM reports WHERE id_provider = :id_provider AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id" => intval($request[1])));
       } else {
-        $query = $this->db->prepare('DELETE FROM `reports` WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
+        $query = $this->db->prepare('DELETE FROM reports WHERE id_provider = :id_provider AND id_user = :id_user AND id = :id');
         $query->execute(Array("id_provider" => $this->id_provider, "id_user" => $data['id_user'], "id" => intval($request[1])));
       }
       $this->handleOk($request,"ok");
