@@ -1,4 +1,4 @@
-CREATE DATABASE interface_serac;
+CREATE DATABASE interface_serac OWNER="www-data";
 \connect interface_serac;
 
 CREATE TABLE reports (
@@ -27,6 +27,8 @@ CREATE TABLE reports (
 ALTER TABLE reports
   ADD PRIMARY KEY (id);
 
+ALTER TABLE reports OWNER TO "www-data";
+
 CREATE TABLE provider (
   id SERIAL,
   name varchar(250) NOT NULL,
@@ -42,6 +44,4 @@ CREATE TABLE provider (
 ALTER TABLE provider
   ADD PRIMARY KEY (id);
 
-CREATE USER interface_serac with encrypted password 'password';
-
-GRANT ALL PRIVILEGES ON DATABASE interface_serac to interface_serac;
+ALTER TABLE provider OWNER TO "www-data";
