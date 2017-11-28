@@ -1,3 +1,5 @@
+CREATE DATABASE interface_serac;
+\connect interface_serac;
 
 CREATE TABLE reports (
   id SERIAL,
@@ -24,3 +26,22 @@ CREATE TABLE reports (
 
 ALTER TABLE reports
   ADD PRIMARY KEY (id);
+
+CREATE TABLE provider (
+  id SERIAL,
+  name varchar(250) NOT NULL,
+  state smallint NOT NULL,
+  apikey varchar(250) NOT NULL,
+  secret varchar(250) NOT NULL,
+  login varchar(50) NOT NULL,
+  password varchar(50) NOT NULL,
+  created_at timestamp NOT NULL,
+  updated_at timestamp NOT NULL
+);
+
+ALTER TABLE provider
+  ADD PRIMARY KEY (id);
+
+CREATE USER interface_serac with encrypted password 'password';
+
+GRANT ALL PRIVILEGES ON DATABASE interface_serac to interface_serac;

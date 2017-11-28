@@ -1,7 +1,7 @@
 <?php
 $host = getenv('DB_HOST') ?: '127.0.0.1';
-$db   = getenv('DB_NAME') ?: 'interface-serac';
-$user = getenv('DB_USER') ?: 'user';
+$db   = getenv('DB_NAME') ?: 'interface_serac';
+$user = getenv('DB_USER') ?: 'interface_serac';
 $pass = getenv('DB_PASS') ?: 'password';
 
 $dsn = "pgsql:host=$host;dbname=$db";
