@@ -2,10 +2,11 @@ version: '2'
 
 services:
   postgresql:
-     build: ./install/
+    build: ./install/
 
   serac:
-    image: c2corg/interface-serac:latest
+    #image: c2corg/interface-serac:latest
+    build: .
     ports:
     - 8080:80
     links:
